@@ -1,32 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>Animation Example</title>
-
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    <meta charset="UTF-8" />
+    <title>Face Tracking with 3D Model</title>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face-detection/face-detection.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera-utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing-utils/drawing_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.150.0/examples/js/loaders/GLTFLoader.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      canvas, video { position: absolute; top: 0; left: 0; }
+    </style>
   </head>
+  <body>
+    <video id="video" autoplay muted playsinline style="display:none;"></video>
+    <script>
+      let video = document.getElementById('video');
 
-  <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+      // Setup Three.js scene
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
+      camera.position.z = 2;
 
-      <!-- Marker 指定 pattern 檔案 -->
-      <a-marker type="pattern" url="pattern-marker.patt">
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
 
-        <!-- 載入 .glb 檔案（包含動畫） -->
-        <a-entity 
-          gltf-model="Open_Door.glb"
-          animation-mixer
-          scale="0.5 0.5 0.5"
-          position="0 0 0"
-        ></a-entity>
+      // Load GLB Model
+      const loader = new THREE.GLTFLoader();
+      let model;
+      loader.load('Open_Door.glb', function(gltf) {
+        model = gltf.scene;
+        model.scale.set(0.5, 0.5, 0.5);
+        scene.add(model);
+      });
 
-      </a-marker>
+      // Setup MediaPipe face detection
+      const faceDetection = new FaceDetection.FaceDetection({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face-detection/${file}` });
+      faceDetection.setOptions({ model: 'short', minDetectionConfidence: 0.5 });
+      faceDetection.onResults(onResults);
 
-      <!-- 相機 -->
-      <a-entity camera></a-entity>
+      async function onResults(results) {
+        if (results.detections.length > 0 && model) {
+          const face = results.detections[0].boundingBox;
+          const x = (face.xCenter / video.videoWidth) * 2 - 1;
+          const y = -((face.yCenter / video.videoHeight) * 2 - 1);
+          model.position.set(x, y, 0);
+        }
+        renderer.render(scene, camera);
+      }
 
-    </a-scene>
+      const cameraUtils = new CameraUtils.Camera(video);
+      cameraUtils.start();
+      async function detectLoop() {
+        await faceDetection.send({ image: video });
+        requestAnimationFrame(detectLoop);
+      }
+      detectLoop();
+    </script>
   </body>
 </html>
