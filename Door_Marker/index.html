@@ -25,22 +25,23 @@
           rotation="-90 0 0"
           scale="0.5 0.5 0.5"
           position="0 0 0"
-          animation-mixer="pauseOnLoad: true"
+          animation-mixer="loop: once; clampWhenFinished: true; startEvents: click;"
+          
       ></a-entity>
       </a-marker>
       <!-- 載入 .glb 檔案（包含動畫） -->
-      <!-- animation-mixer="loop: once; clampWhenFinished: true" -->
+      <!-- animation-mixer="loop: once; autoplay: false; " -->
 
       <!-- 相機 -->
       <a-entity camera>
-        <a-cursor
-          fuse="false"
-          raycaster="objects: #door"
-        ></a-cursor>
+        <a-cursor>
+          <!-- fuse="false"
+          raycaster="objects: #door" -->
+        </a-cursor>
       </a-entity>
 
     </a-scene>
-    <script>
+    <!-- <script>
       // 等 DOM 與 A-Frame 元件都載入
       document.addEventListener('DOMContentLoaded', () => {
         const doorEl = document.querySelector('#door');
@@ -58,6 +59,6 @@
           }
         });
       });
-    </script>
+    </script> -->
   </body>
 </html>
