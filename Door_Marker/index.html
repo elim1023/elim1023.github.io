@@ -25,19 +25,21 @@
           rotation="-90 0 0"
           scale="0.5 0.5 0.5"
           position="0 0 0"
-          animation-mixer="loop: once; clampWhenFinished: true; startEvents: click;"
+          animation-mixer=" startEvents: click;"
           
       ></a-entity>
       </a-marker>
       <!-- 載入 .glb 檔案（包含動畫） -->
-      <!-- animation-mixer="loop: once; autoplay: false; " -->
+      <!-- animation-mixer="loop: once; autoplay: false; clampWhenFinished: true;" -->
 
       <!-- 相機 -->
       <a-entity camera>
-        <a-cursor>
-          <!-- fuse="false"
-          raycaster="objects: #door" -->
-        </a-cursor>
+        <a-cursor
+          id="cursor"
+          fuse="false"
+          rayOrigin="mouse"
+          raycaster="objects: #door"
+        ></a-cursor>
       </a-entity>
 
     </a-scene>
