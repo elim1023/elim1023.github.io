@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>AR.js + Clickable Animation</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+      
+      <!-- Marker -->
+      <a-marker type="pattern" url="pattern-marker.patt">
+        <!-- 這個模型只有在點擊的時候播放動畫 -->
+        <a-entity
+          id="door"
+          class="clickable"
+          gltf-model="Open_Door.glb"
+          rotation="-90 0 0"
+          scale="0.5 0.5 0.5"
+          animation-mixer="
+            clip: *; 
+            startEvents: click; 
+            timeScale: 1; 
+            loop: repeat
+          ">
+        </a-entity>
+      </a-marker>
+
+      <!-- Camera + Cursor -->
+      <a-entity camera look-controls>
+        <a-cursor
+          id="cursor"
+          fuse="true"
+          fuseTimeout="1500"
+          rayOrigin="mouse"
+          raycaster="objects: .clickable"
+        >
+          <!-- 點擊時環圈動畫，可選 -->
+          <a-animation
+            begin="click"
+            easing="ease-in"
+            attribute="scale"
+            from="0.2 0.2 0.2"
+            to="1 1 1"
+            dur="150"
+            fill="forwards"
+          ></a-animation>
+          <a-animation
+            begin="fusing"
+            easing="ease-in"
+            attribute="scale"
+            from="1 1 1"
+            to="0.2 0.2 0.2"
+            dur="1500"
+            fill="backwards"
+          ></a-animation>
+        </a-cursor>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
