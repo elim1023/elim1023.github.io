@@ -25,13 +25,13 @@
           rotation="-90 0 0"
           scale="0.5 0.5 0.5"
           position="0 0 0"
-          animation-mixer="autoplay: false; startEvents: click;"
-          
-      ></a-entity>
+          animation="startEvents: click;"
+      >
+        <!-- <a-animation> </a-animation> -->
+      </a-entity>
       </a-marker>
       <!-- 載入 .glb 檔案（包含動畫） -->
-      <!-- animation-mixer="loop: once; autoplay: false; clampWhenFinished: true;" -->
-
+      <!-- animation-mixer="loop: once; autoplay: false; clampWhenFinished: true; " -->
       <!-- 相機 -->
       <a-entity camera>
         <a-cursor
