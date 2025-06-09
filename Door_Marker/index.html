@@ -25,7 +25,7 @@
           rotation="-90 0 0"
           scale="0.5 0.5 0.5"
           position="0 0 0"
-          animation-mixer=" startEvents: click;"
+          animation-mixer="autoplay: false; startEvents: click;"
           
       ></a-entity>
       </a-marker>
@@ -43,24 +43,5 @@
       </a-entity>
 
     </a-scene>
-    <!-- <script>
-      // 等 DOM 與 A-Frame 元件都載入
-      document.addEventListener('DOMContentLoaded', () => {
-        const doorEl = document.querySelector('#door');
-        // 等模型真正載入，確保 animation-mixer 已初始化
-        doorEl.addEventListener('model-loaded', () => {
-          // animation-mixer 已透過 pauseOnLoad 暫停
-          console.log('模型載入完成，動畫暫停中');
-        });
-        // 監聽 cursor click 事件
-        doorEl.addEventListener('click', () => {
-          const mixerComp = doorEl.components['animation-mixer'];
-          if (mixerComp) {
-            mixerComp.play();  // 開始播放動畫
-            console.log('開始播放動畫');
-          }
-        });
-      });
-    </script> -->
   </body>
 </html>
