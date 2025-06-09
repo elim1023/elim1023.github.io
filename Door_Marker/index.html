@@ -25,7 +25,7 @@
           rotation="-90 0 0"
           scale="0.5 0.5 0.5"
           position="0 0 0"
-          animation="startEvents: click;"
+          animation-mixer="clip: *; loop: once; startEvents: play;"
       >
         <!-- <a-animation> </a-animation> -->
       </a-entity>
@@ -43,5 +43,22 @@
       </a-entity>
 
     </a-scene>
+    <script>
+      // 等場景跟 model 都載好以後
+      window.addEventListener('DOMContentLoaded', () => {
+        const door = document.querySelector('#door');
+
+        // 電腦滑鼠 click
+        door.addEventListener('click', () => {
+          door.emit('play');
+        });
+
+        // 手機觸控 touchstart
+        door.addEventListener('touchstart', (e) => {
+          e.preventDefault();   // 阻止預設的雙擊縮放等等
+          door.emit('play');
+        });
+      });
+    </script>
   </body>
 </html>
