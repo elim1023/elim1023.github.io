@@ -8,6 +8,8 @@
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
     <!-- 引入 aframe-extras（包含 animation-mixer）-->
     <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <!-- <script src="Start_game.js"></script> -->
   </head>
 
   <body style="margin: 0; overflow: hidden;">
@@ -18,19 +20,44 @@
       <!-- Marker 指定 pattern 檔案 -->
       <a-marker type="pattern" url="pattern-marker.patt">
         <a-entity 
-        gltf-model="Open_Door.glb"
-        rotation="-90 0 0"
-        scale="0.5 0.5 0.5"
-        position="0 0 0"
-        animation-mixer
+          id="door"
+          gltf-model="Open_Door.glb"
+          rotation="-90 0 0"
+          scale="0.5 0.5 0.5"
+          position="0 0 0"
+          animation-mixer="pauseOnLoad: true"
       ></a-entity>
       </a-marker>
       <!-- 載入 .glb 檔案（包含動畫） -->
-       <!-- animation-mixer="loop: once; clampWhenFinished: true" -->
-      
+      <!-- animation-mixer="loop: once; clampWhenFinished: true" -->
+
       <!-- 相機 -->
-      <a-entity camera></a-entity>
+      <a-entity camera>
+        <a-cursor
+          fuse="false"
+          raycaster="objects: #door"
+        ></a-cursor>
+      </a-entity>
 
     </a-scene>
+    <script>
+      // 等 DOM 與 A-Frame 元件都載入
+      document.addEventListener('DOMContentLoaded', () => {
+        const doorEl = document.querySelector('#door');
+        // 等模型真正載入，確保 animation-mixer 已初始化
+        doorEl.addEventListener('model-loaded', () => {
+          // animation-mixer 已透過 pauseOnLoad 暫停
+          console.log('模型載入完成，動畫暫停中');
+        });
+        // 監聽 cursor click 事件
+        doorEl.addEventListener('click', () => {
+          const mixerComp = doorEl.components['animation-mixer'];
+          if (mixerComp) {
+            mixerComp.play();  // 開始播放動畫
+            console.log('開始播放動畫');
+          }
+        });
+      });
+    </script>
   </body>
 </html>
