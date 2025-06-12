@@ -1,4 +1,5 @@
-<!-- 將門拆成兩個物件進行動畫 -->
+<!-- 手機端
+將門拆成兩個物件進行動畫 -->
 
 <!DOCTYPE html>
 <html>
@@ -31,6 +32,7 @@
       <!-- <a-entity id="model-container"> -->
       <a-entity
         position="0 1.5 -5"
+        open-door-animation
         >
         <a-entity id="leftdoor"
           position="-1 0 0"
@@ -40,7 +42,6 @@
             rotation="0 0 0"
             scale="0.5 0.5 0.5"
             position="1 0 0"
-            open-door-animation
           >
           </a-entity>
         </a-entity>
@@ -55,7 +56,6 @@
             rotation="0 0 0"
             scale="0.5 0.5 0.5"
             position="-1 0 0"
-            open-door-animation
           >
           </a-entity>
         </a-entity>
@@ -66,40 +66,26 @@
       </a-camera>
       <!-- <a-entity camera look-controls mouse-cursor></a-entity> -->
       <a-entity id="mouseCursor" cursor="rayOrigin: mouse"></a-entity>
-        
-  
-  
-      <!-- <a-entity camera></a-entity> -->
+
       <!-- 相機 -->
-       <!-- animation-mixer="loop: once; clampWhenFinished: true" -->
-        <!-- startAt:100 -->
     </a-scene>
     <script>
       AFRAME.registerComponent('open-door-animation', {
         init: function () {
-          // var data = this.data;
+          
           var el = this.el;
-          // var lastIndex = -1;
-          // var COLORS = ['red', 'green', 'blue'];
+          
           this.el.addEventListener('click', function (evt) {
             var leftdoor = document.querySelector('#leftdoor');
             var rightdoor = document.querySelector('#rightdoor');
-            leftdoor.setAttribute('rotation', '0 90 0');
-            rightdoor.setAttribute('rotation', '0 -90 0');
-            // el.setAttribute('rotation', '0 90 0');
-
-
-            // el.object3D.scale.copy(data.to);
-            // el.play();
-            // el.emit(`startanim001`, null, false);
-            // 更新元件屬性
-            // el.setAttribute('animation-mixer', {                            
-            //                     loop: once, clampWhenFinished: true});
-            // el.setAttribute("animation-mixer", "loop: once;");
+            leftdoor.setAttribute('animation',{'property': 'rotation',
+                                                'to': {x: 0, y: 90, z: 0},
+                                                'dur':'3000'});
+            rightdoor.setAttribute('animation',{'property': 'rotation',
+                                                'to': {x: 0, y: -90, z: 0},
+                                                'dur':'3000'});
+            
             console.log("click sccuss!")
-            // lastIndex = (lastIndex + 1) % COLORS.length;
-            // this.setAttribute('material', 'color', COLORS[lastIndex]);
-            // console.log('I was clicked at: ', evt.detail.intersection.point);
           });
         }
       });
